@@ -1,0 +1,86 @@
+﻿@model TropicalServerApp.Models.Customer 
+
+@{
+    Layout = null;
+}
+
+@{  
+    object cId = Session["cId"];
+    if (cId == null)
+    {
+        cId = Model.CustomerId;
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TropicalServer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap" rel="stylesheet">
+    @Styles.Render("~/Content/Site.css")
+    @Styles.Render("~/Content/TropicalStyles/Login.css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="page">
+
+    <div id="container" class="container">
+
+        <div>
+
+            @Html.Partial("_Banner")
+            <div>
+                <div id="BodyDetail">
+                    <label id="Loginlbl">MOBILE CUSTOMER ORDER TRACKING</label>
+                    <form action="Submit" method="post" id="loginBox">
+                        <div id="login">
+                            <label id="usernamelbl">Login ID: </label>
+                            <input name="CustomerId" id="useridtextbox" type="text" value="@cId" />
+                        </div>
+
+                            <div id="errorBox">
+                                <label id="errorlbl">@Html.ValidationMessageFor(x => x.CustomerId)</label>
+                            </div>
+                        
+
+                        <div id="pass">
+                            <label id="passwordlbl">Password: </label>
+                            <input name="CustomerPassword" id="passwordtextbox" type="password" value="@Model.CustomerPassword" />
+                        </div>
+
+                            <div id="errorBox">
+                                <label id="errorlbl">@Html.ValidationMessageFor(x => x.CustomerPassword)@ViewData["AuthError"]</label>
+                            </div>
+                        
+                        <div id="submit">
+                            <div id="rememberId">
+                                <label>Remember my ID</label>
+                                <input name="RememberId" type="checkbox" />
+                            </div>
+                            <input id="LoginBtn_1" type="submit" value="Log-In" />
+                        </div>
+                
+
+                </form>
+                    <div id="forgot">
+                        @Html.ActionLink("Forgot Username", "ForgotUsername", "Login", null, new { id = "forgotUsername" })
+                        @Html.ActionLink("Forgot Password", "ForgotPassword", "Login", null, new { id = "forgotPassword" })
+                    </div>
+
+            </div>
+            </div>
+
+        </div>
+        <footer class="footer">
+            <span>&copy; @DateTime.Now.Year - My ASP.NET Application</span>
+        </footer>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+ </body>
+</html>

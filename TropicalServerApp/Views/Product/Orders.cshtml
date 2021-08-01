@@ -1,0 +1,104 @@
+﻿@model TropicalServerApp.ViewModels.OrderViewModel
+@using TropicalServerApp.Models
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TropicalServer</title>
+    @Styles.Render("~/Content/Site.css")
+    @Styles.Render("~/Content/TropicalStyles/Orders.css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="page">
+    <div id="container" class="container">
+        <div>
+            @Html.Partial("_Banner")
+            <nav style="background-color:#FBB917; border:none" class="navbar navbar-default">
+                <div style="background-color:#FBB917" class="container-fluid">
+                    <div id="menuItem">
+                        <ul class="nav navbar-nav">
+                            <span>
+                            <li>@Html.ActionLink("Orders", "Orders", "Product", null, new { id = "active" })</li>
+                            <li>@Html.ActionLink("Product", "Product", "Product")</li>
+                            </span>
+                            <li id="logout">@Html.ActionLink("Logout", "Logout", "Login")</li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="CriteriaBar">
+                <form action="Filter" method="post" class="Criteria">
+                    <span>
+                        <label class="label">Order Date: </label>
+                        <select class="Input" name="OrderDate" onchange="this.form.submit()">
+                            <option value="0" @(Model.order.OrderDate == "0" ? "selected" : "")>All time</option>
+                            <option value="1" @(Model.order.OrderDate == "1" ? "selected" : "")>Today</option>
+                            <option value="2" @(Model.order.OrderDate == "2" ? "selected" : "")>Last 7 Days</option>
+                            <option value="3" @(Model.order.OrderDate == "3" ? "selected" : "")>Last 1 Month</option>
+                            <option value="4" @(Model.order.OrderDate == "4" ? "selected" : "")>Last 6 Months</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label class="label">Customer ID: </label>
+                        <input class="Input" type="text" name="CustomerId" value="@Model.order.CustomerId" onchange="this.form.submit()"/>
+                    </span>
+                    <span>
+                        <label class="label">Customer Name: </label>
+                        <input class="Input" type="text" name="CustomerName" value="@Model.order.CustomerName" onchange="this.form.submit()"/>
+                    </span>
+                    <span>
+                        <label class="label">Sales Manager: </label>
+                        <select class="Input" name="SalesManager" onchange="this.form.submit()">
+                            <option disabled selected>  </option>
+                        </select>
+                    </span>
+                </form>
+
+            </div>
+
+            <div id="grid">
+                <table class="gvOrders">
+                    <tr>
+                        <th>Tracking #</th>
+                        <th>Order Date</th>
+                        <th>Customer ID</th>
+                        <th>Customer Name</th>
+                        <th>Address</th>
+                        <th>Route #</th>
+                        <th>Available Actions</th>
+                    </tr>
+                    @{
+                        int i = 1;
+                        foreach (Order o in Model.orders)
+                        {
+                            var oddEvenClass = i % 2 > 0 ? "Row" : "AltRow";
+                            i += 1;
+                            <tr id="@o.OrderId"class="@oddEvenClass">
+                                <td>@o.TrackingNum</td>
+                                <td>@o.OrderDate</td>
+                                <td>@o.CustomerId</td>
+                                <td>@o.CustomerName</td>
+                                <td>@o.Address</td>
+                                <td>@o.RouteNum</td>
+                                <td>
+                                    @Html.ActionLink("View", "View", "Product")
+                                    @Html.ActionLink("Edit", "Edit", "Product")
+                                    @Html.ActionLink("Delete", "Delete", "Product")
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
